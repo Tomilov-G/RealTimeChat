@@ -1,0 +1,27 @@
+.formWrapper {
+  background-color: black;
+  height: 600px;
+  width: 50%;
+  border-radius: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  .logo {
+    font-size: 32px;
+  }
+  .formTitle {
+    font-size: 24px;
+  }
+  .loginForm {
+    height: 250px;
+    width: 90%;
+    border-radius: 50px;
+    margin-block: 30px;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+}

@@ -1,0 +1,20 @@
+.writeMessage {
+  height: 100px;
+  background-color: rgb(60, 94, 112);
+  border-radius: 16px 16px 0px 0px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  .formWrapper {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    .input {
+      height: 40px;
+      border-radius: 16px;
+      border: none;
+      width: 50%;
+      margin-right: 20px;
+    }
+  }
+}

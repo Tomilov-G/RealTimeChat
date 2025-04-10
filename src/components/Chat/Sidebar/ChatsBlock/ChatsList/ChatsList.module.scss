@@ -1,0 +1,17 @@
+.chatsList {
+  text-decoration: none;
+  .chatsItem {
+    border-bottom: 1px solid black;
+    text-align: center;
+    transition: 0.3s;
+    font-size: 20px;
+    &:hover {
+      background-color: white;
+      cursor: pointer;
+    }
+  }
+}
+.text {
+  text-align: center;
+  font-size: 20px;
+}

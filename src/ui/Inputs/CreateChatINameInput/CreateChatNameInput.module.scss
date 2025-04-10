@@ -1,0 +1,11 @@
+.input {
+  background-color: rgb(235, 232, 230);
+  border-radius: 8px;
+  border: none;
+  transition: 0.3s;
+  margin-bottom: 30px;
+  height: 40px;
+  &:hover {
+    opacity: 0.8;
+  }
+}

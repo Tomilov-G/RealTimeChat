@@ -1,0 +1,35 @@
+.chatInfo {
+  height: 100px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(60, 94, 112);
+  border-radius: 0px 0px 16px 16px;
+  color: white;
+  position: relative;
+  top: 0;
+  .chatName {
+    text-decoration: underline;
+    user-select: none;
+    &:hover {
+      cursor: pointer;
+      text-decoration: none;
+      opacity: 0.8;
+    }
+  }
+  .chatUser {
+    display: flex;
+    justify-content: space-between;
+    width: 150%;
+    align-items: center;
+    padding-bottom: 20px;
+    transform: 0.3s;
+    .deleteIcon {
+      &:hover {
+        cursor: pointer;
+        opacity: 0.8;
+      }
+    }
+  }
+}

@@ -1,0 +1,11 @@
+.textArea {
+  background-color: rgb(235, 232, 230);
+  resize: none;
+  border-radius: 8px;
+  height: 150px;
+  transition: 0.3s;
+  margin-bottom: 30px;
+  &:hover {
+    opacity: 0.8;
+  }
+}

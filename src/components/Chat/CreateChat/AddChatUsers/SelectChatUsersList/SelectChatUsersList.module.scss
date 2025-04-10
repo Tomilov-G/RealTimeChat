@@ -1,0 +1,12 @@
+.selectChatUsers {
+  display: flex;
+  flex-direction: column;
+  background-color: rgb(235, 232, 230);
+  color: black;
+  overflow-y: auto;
+  margin-bottom: 20px;
+  .selectChatUsersList {
+    max-height: 75px;
+    text-decoration: none;
+  }
+}

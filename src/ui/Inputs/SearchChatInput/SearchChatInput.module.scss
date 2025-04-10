@@ -1,0 +1,15 @@
+.input {
+  height: 40px;
+  width: 100%;
+  border: none;
+  border-bottom: 1px black solid;
+  padding-left: 15px;
+  background-color: rgb(218, 192, 192);
+  transition: 0.3s;
+  &:hover {
+    opacity: 0.6;
+  }
+  &::placeholder {
+    color: rgb(79, 76, 76);
+  }
+}

@@ -1,0 +1,10 @@
+.registerLink {
+  color: black;
+  display: flex;
+  justify-content: end;
+  transition: 0.3s;
+  &:hover {
+    text-decoration: none;
+    color: gray;
+  }
+}

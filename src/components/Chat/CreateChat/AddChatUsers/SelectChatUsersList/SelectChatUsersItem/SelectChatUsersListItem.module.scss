@@ -1,0 +1,13 @@
+.selectChatUsersListItem {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  flex-direction: row-reverse;
+  column-gap: 10%;
+  text-align: center;
+  text-decoration: none;
+  border: 0.5px black solid;
+  &:hover {
+    opacity: 0.8;
+  }
+}
