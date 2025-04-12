@@ -1,4 +1,5 @@
-Frontend: React, Redux, SCSS
+Frontend: React, Redux, SCSS;
+
 Backend: Socket.IO, Express.js
 
 Instructions: 
