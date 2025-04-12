@@ -1,3 +1,6 @@
+Frontend: React, Redux, SCSS
+Backend: Socket.IO, Express.js
+
 Instructions: 
 1) Download the project locally to your computer.
 2) Open the project via the code editor.
