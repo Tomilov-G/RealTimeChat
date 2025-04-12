@@ -1,6 +1,7 @@
 import { useSelector, useDispatch } from "react-redux";
 import { setChatDetails } from "../../../../store/Slices/chatsSlice";
 import { CreateChatDescriptionTextArea } from "../../../../ui/TextArea/CreateChatDescriptionTextArea/CreateChatDescriptionTextArea";
+
 export const CreateChatDescription = () => {
   const dispatch = useDispatch();
   const chatDescription = useSelector(

@@ -6,13 +6,10 @@ export const UserInfo = () => {
   if (!currentUser) {
     return <p>Загрузка...</p>;
   }
-  const currentUserImage = currentUser.avatar;
-  const currentUserName = currentUser.name;
-
   return (
     <div className={classes.userInfo}>
-      <img src={currentUserImage} alt="Фото" className={classes.userImage} />
-      <p className={classes.userName}>{currentUserName}</p>
+      <img src={currentUser.avatar} alt="Фото" className={classes.userImage} />
+      <p className={classes.userName}>{currentUser.name}</p>
     </div>
   );
 };

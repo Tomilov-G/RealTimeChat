@@ -1,14 +1,14 @@
 import { useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import classes from "./ChatInfo.module.scss";
 import { ChatModalWindow } from "../../../../ui/ModalWindows/ChatModalWindow/ChatModalWindow";
-import { removeUserFromChat } from "../../../../store/Slices/chatsSlice";
+import { socket } from "../../../../socket";
 
 export const ChatInfo = () => {
   const selectedChat = useSelector((state) => state.chats.selectedChat);
-  const dispatch = useDispatch();
+  const currentUser = useSelector((state) => state.users.currentUser);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const toggleModal = () => {
@@ -16,29 +16,37 @@ export const ChatInfo = () => {
   };
 
   const handleDeleteUser = (userId) => {
-    if (selectedChat) {
-      dispatch(removeUserFromChat(userId));
+    if (currentUser?.name === selectedChat?.creatorOfChat) {
+      socket.emit("removeUserFromChat", {
+        chatId: selectedChat.id,
+        userId,
+        creatorId: currentUser.name, // Send creatorOfChat as name
+      });
+    } else {
+      alert("Only the chat creator can remove users!");
     }
   };
 
   return (
     <div className={classes.chatInfo}>
       <h2 className={classes.chatName} onClick={toggleModal}>
-        {selectedChat.chatName}
+        {selectedChat?.chatName || "Выберите чат"}
       </h2>
 
-      {isModalOpen && (
+      {isModalOpen && selectedChat && (
         <ChatModalWindow
           chatDescription={selectedChat.chatDescription}
           chatCreator={selectedChat.creatorOfChat}
-          chatUsers={selectedChat.users.map((user, index) => (
-            <li className={classes.chatUser} key={index}>
+          chatUsers={selectedChat.users.slice(1).map((user) => (
+            <li className={classes.chatUser} key={user.id}>
               {user.name}
-              <FontAwesomeIcon
-                icon={faTrash}
-                className={classes.deleteIcon}
-                onClick={() => handleDeleteUser(user.id)}
-              />
+              {currentUser?.name === selectedChat.creatorOfChat && (
+                <FontAwesomeIcon
+                  icon={faTrash}
+                  className={classes.deleteIcon}
+                  onClick={() => handleDeleteUser(user.id)}
+                />
+              )}
             </li>
           ))}
         />

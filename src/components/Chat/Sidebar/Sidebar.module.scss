@@ -1,10 +1,11 @@
 .sidebar {
   width: 25%;
-  border: 1px black solid;
-  height: 100vh;
+  border: 1px black white;
+  height: 100%;
   .topSection {
     width: 100%;
-    background-color: black;
+    background-color: #fbab7e;
+    background-image: linear-gradient(62deg, #fbab7e 0%, #f7ce68 100%);
     color: white;
     padding: 15px;
     height: 20%;

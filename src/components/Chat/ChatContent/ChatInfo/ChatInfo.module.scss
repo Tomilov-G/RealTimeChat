@@ -1,10 +1,12 @@
 .chatInfo {
-  height: 100px;
+  height: 150px;
   width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: rgb(60, 94, 112);
+  background: #232526;
+  background: -webkit-linear-gradient(to right, #414345, #232526);
+  background: linear-gradient(to right, #414345, #232526);
   border-radius: 0px 0px 16px 16px;
   color: white;
   position: relative;
@@ -21,14 +23,14 @@
   .chatUser {
     display: flex;
     justify-content: space-between;
-    width: 150%;
+    width: 205px;
     align-items: center;
     padding-bottom: 20px;
-    transform: 0.3s;
     .deleteIcon {
+      transition: 0.3s;
       &:hover {
         cursor: pointer;
-        opacity: 0.8;
+        color: black;
       }
     }
   }

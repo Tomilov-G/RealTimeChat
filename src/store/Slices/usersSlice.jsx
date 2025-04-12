@@ -46,4 +46,4 @@ const usersSlice = createSlice({
 
 export const { setCurrentUser, toggleSelectedUser, resetSelectedChatUsers } =
   usersSlice.actions;
-export default usersSlice.reducer; 
+export default usersSlice.reducer;

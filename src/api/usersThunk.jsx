@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import { API_URL } from "../constans/apiURL";
+import { API_URL } from "../constants/apiURL";
 
 export const fetchUsers = createAsyncThunk("users/fetchUsers", async () => {
   try {

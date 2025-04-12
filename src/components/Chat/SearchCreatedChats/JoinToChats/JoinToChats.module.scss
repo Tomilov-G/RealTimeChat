@@ -1,0 +1,39 @@
+.joinToChats {
+  background-color: #fbab7e;
+  background-image: linear-gradient(62deg, #fbab7e 0%, #f7ce68 100%);
+  height: 600px;
+  width: 50%;
+  border-radius: 50px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  .title {
+    margin-bottom: 80px;
+    color: white;
+  }
+  .input {
+    height: 50px;
+    width: 70%;
+    border-radius: 16px;
+    border: none;
+    padding-left: 15px;
+  }
+  .chatList {
+    text-decoration: none;
+    padding-top: 20px;
+    padding-bottom: 200px;
+    .chatItem {
+      color: white;
+    }
+  }
+  .button {
+    transition: 0.3s;
+    background-color: white;
+    color: black;
+    &:hover {
+      background-color: rgb(0, 0, 0);
+      color: rgb(255, 255, 255);
+    }
+  }
+}

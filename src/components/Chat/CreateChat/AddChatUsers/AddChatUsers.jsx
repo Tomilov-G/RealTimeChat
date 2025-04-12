@@ -15,6 +15,7 @@ export const AddChatUsers = () => {
       dispatch(fetchUsers());
     }
   }, []);
+
   const filteredUsers = useMemo(
     () =>
       users.filter(

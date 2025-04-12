@@ -5,7 +5,7 @@ import { loadState, subscribeToStore } from "../localStorage/localStorage";
 
 const preloadedState = loadState();
 
-const store = configureStore({
+export const store = configureStore({
   reducer: {
     users: usersReducer,
     chats: chatsReducer,
@@ -14,5 +14,3 @@ const store = configureStore({
 });
 
 subscribeToStore(store);
-
-export default store;

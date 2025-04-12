@@ -1,17 +1,31 @@
 .chatsList {
   text-decoration: none;
   .chatsItem {
-    border-bottom: 1px solid black;
+    border-bottom: 1px solid white;
     text-align: center;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    padding-left: 20px;
     transition: 0.3s;
-    font-size: 20px;
+    font-size: 18px;
+    min-height: 40px;
     &:hover {
       background-color: white;
+      color: black;
       cursor: pointer;
     }
   }
 }
 .text {
+  padding-block: 15px;
   text-align: center;
-  font-size: 20px;
+  font-size: 22px;
+  border-bottom: 1px white solid;
+}
+.noChats {
+  font-size: 18px;
+  display: flex;
+  justify-content: center;
+  padding-top: 20px;
 }

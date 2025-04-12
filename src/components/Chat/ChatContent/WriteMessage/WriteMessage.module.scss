@@ -1,6 +1,8 @@
 .writeMessage {
-  height: 100px;
-  background-color: rgb(60, 94, 112);
+  height: 150px;
+  background: #232526;
+  background: -webkit-linear-gradient(to right, #414345, #232526);
+  background: linear-gradient(to right, #414345, #232526);
   border-radius: 16px 16px 0px 0px;
   display: flex;
   justify-content: center;
@@ -15,6 +17,7 @@
       border: none;
       width: 50%;
       margin-right: 20px;
+      padding-left: 20px;
     }
   }
 }

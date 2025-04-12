@@ -19,13 +19,13 @@ export const LoginForm = () => {
     if (users.length === 0) {
       dispatch(fetchUsers());
     }
-  }, []);
+  }, [dispatch]);
 
   const getEmailAddress = (event) => {
     setEmail(event.target.value.trim());
   };
 
-  const checkEmail = async (event) => {
+  const checkEmail = (event) => {
     event.preventDefault();
 
     const user = users.find((user) => user.email === email);
@@ -34,10 +34,11 @@ export const LoginForm = () => {
       dispatch(setCurrentUser(user));
       navigate("/chat");
     } else {
-      alert("Вы не зарегестрированы !");
+      alert("You are not registered!");
     }
     setEmail("");
   };
+
   return (
     <div className={classes.formWrapper}>
       <Logo className={classes.logo} />

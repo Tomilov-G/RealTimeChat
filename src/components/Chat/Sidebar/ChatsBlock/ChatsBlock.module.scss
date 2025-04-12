@@ -1,7 +1,19 @@
 .chatsSection {
-  background-color: rgb(246, 230, 230);
-  height: 75%;
+  background: #232526; 
+  background: -webkit-linear-gradient(
+    to right,
+    #414345,
+    #232526
+  ); 
+  background: linear-gradient(
+    to right,
+    #414345,
+    #232526
+  );
+
+  height: 100%;
   justify-content: center;
+  color: white;
   .text {
     font-size: 16px;
   }

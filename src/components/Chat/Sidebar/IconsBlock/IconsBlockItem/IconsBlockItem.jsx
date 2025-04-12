@@ -8,7 +8,7 @@ export const IconsBlockItem = ({ to, icon, id, tooltip }) => {
   return (
     <>
       <Link to={to} className={classes.link}>
-        <FontAwesomeIcon id={id} icon={icon} />
+        <FontAwesomeIcon id={id} icon={icon} focusable="false" />
       </Link>
       <Tooltip anchorSelect={`#${id}`} place="left" arrowColor="white">
         {tooltip}
