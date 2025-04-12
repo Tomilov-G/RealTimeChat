@@ -15,16 +15,19 @@ export const LoginForm = () => {
   const users = useSelector((state) => state.users.users);
   const dispatch = useDispatch();
 
+  // Fetch users if not loaded
   useEffect(() => {
     if (users.length === 0) {
       dispatch(fetchUsers());
     }
   }, [dispatch]);
 
+  // Handle email input change
   const getEmailAddress = (event) => {
     setEmail(event.target.value.trim());
   };
 
+  // Handle form submission to check email
   const checkEmail = (event) => {
     event.preventDefault();
 
@@ -43,14 +46,14 @@ export const LoginForm = () => {
     <div className={classes.formWrapper}>
       <Logo className={classes.logo} />
       <form className={classes.loginForm} onSubmit={checkEmail}>
-        <h3 className={classes.formTitle}>Вход</h3>
+        <h3 className={classes.formTitle}>Login</h3>
         <EmailInput
-          label="Электронная почта"
+          label="Email"
           email={email}
           handleChange={getEmailAddress}
         />
-        <FormButton buttonText="Войти" type="submit" />
-        <Register text="Зарегистрироваться" />
+        <FormButton buttonText="Login" type="submit" />
+        <Register text="Register" />
       </form>
     </div>
   );

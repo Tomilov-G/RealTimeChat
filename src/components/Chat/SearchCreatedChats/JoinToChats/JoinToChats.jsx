@@ -21,21 +21,24 @@ export const JoinToChats = () => {
   const currentUser = useSelector((state) => state.users.currentUser);
 
   useEffect(() => {
+    // Request all chats from the server
     socket.emit("getAllChats");
 
+    // Handle receiving all chats
     socket.on("allChats", (chats) => {
-      console.log("Получены все чаты:", chats);
+      console.log("Received all chats:", chats);
       dispatch({ type: "chats/setAllChats", payload: chats });
     });
 
+    // Handle successful joining of chats
     socket.on("joinedChats", (updatedChats) => {
-      console.log("Успешно присоединились к чатам:", updatedChats);
-      // Обновляем createdChats для каждого присоединённого чата
+      console.log("Successfully joined chats:", updatedChats);
+      // Update createdChats for each joined chat
       updatedChats.forEach((chat) => {
-        console.log("Добавляем чат в createdChats:", chat);
+        console.log("Adding chat to createdChats:", chat);
         dispatch(updateChat(chat));
       });
-      // Выбираем последний присоединённый чат
+      // Select the last joined chat
       if (updatedChats.length > 0) {
         dispatch(setSelectedChat(updatedChats[updatedChats.length - 1]));
       }
@@ -43,11 +46,13 @@ export const JoinToChats = () => {
       navigate("/chat");
     });
 
+    // Handle server errors
     socket.on("error", (error) => {
-      console.error("Ошибка при присоединении:", error.message);
-      alert(`Ошибка: ${error.message}`);
+      console.error("Error joining chats:", error.message);
+      alert(`Error: ${error.message}`);
     });
 
+    // Cleanup socket listeners
     return () => {
       socket.off("allChats");
       socket.off("joinedChats");
@@ -55,7 +60,7 @@ export const JoinToChats = () => {
     };
   }, [dispatch, navigate]);
 
-  // Фильтруем чаты, исключая те, в которых пользователь уже состоит
+  // Filter chats to exclude those the user is already in
   const availableChats = allChats.filter(
     (chat) => !chat.users.some((user) => user.id === currentUser?.email)
   );
@@ -63,13 +68,14 @@ export const JoinToChats = () => {
     chat.chatName.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
+  // Handle joining selected chats
   const handleJoinChats = () => {
     if (!selectedJoinChats.length) {
-      alert("Выберите хотя бы один чат!");
+      alert("Select at least one chat!");
       return;
     }
     if (!currentUser?.email || !currentUser?.name) {
-      alert("Ошибка: пользователь не авторизован");
+      alert("Error: user not authenticated");
       return;
     }
 
@@ -77,16 +83,16 @@ export const JoinToChats = () => {
       chatIds: selectedJoinChats,
       user: { id: currentUser.email, name: currentUser.name },
     };
-    console.log("Отправка joinChats:", joinData);
+    console.log("Sending joinChats:", joinData);
     socket.emit("joinChats", joinData);
   };
 
   return (
     <div className={classes.joinToChats}>
-      <h2 className={classes.title}>Присоединиться к чату</h2>
+      <h2 className={classes.title}>Join a Chat</h2>
       <input
         type="text"
-        placeholder="Поиск чатов..."
+        placeholder="Search chats..."
         value={searchQuery}
         className={classes.input}
         onChange={(e) => setSearchQuery(e.target.value)}
@@ -102,17 +108,17 @@ export const JoinToChats = () => {
                   checked={selectedJoinChats.includes(chat.id)}
                   onChange={() => dispatch(toggleSelectedJoinChat(chat.id))}
                 />
-                {chat.chatName} ({chat.users.length} участников)
+                {chat.chatName} ({chat.users.length} participants)
               </label>
             </li>
           ))
         ) : (
-          <p>Нет доступных чатов для присоединения</p>
+          <p>No chats available to join</p>
         )}
       </ul>
       <FormButton
         onClick={handleJoinChats}
-        buttonText="Присоединиться"
+        buttonText="Join"
         className={classes.button}
       />
     </div>

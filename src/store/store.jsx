@@ -3,6 +3,7 @@ import usersReducer from "./Slices/usersSlice";
 import chatsReducer from "./Slices/chatsSlice";
 import { loadState, subscribeToStore } from "../localStorage/localStorage";
 
+// Load initial state from localStorage
 const preloadedState = loadState();
 
 export const store = configureStore({
@@ -13,4 +14,5 @@ export const store = configureStore({
   preloadedState,
 });
 
+// Subscribe to store changes to persist state
 subscribeToStore(store);

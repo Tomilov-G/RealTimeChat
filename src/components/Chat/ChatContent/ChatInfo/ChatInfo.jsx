@@ -11,16 +11,18 @@ export const ChatInfo = () => {
   const currentUser = useSelector((state) => state.users.currentUser);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  // Toggle modal visibility
   const toggleModal = () => {
     setIsModalOpen((prev) => !prev);
   };
 
+  // Handle user removal from chat
   const handleDeleteUser = (userId) => {
     if (currentUser?.name === selectedChat?.creatorOfChat) {
       socket.emit("removeUserFromChat", {
         chatId: selectedChat.id,
         userId,
-        creatorId: currentUser.name, // Send creatorOfChat as name
+        creatorId: currentUser.name,
       });
     } else {
       alert("Only the chat creator can remove users!");
@@ -30,7 +32,7 @@ export const ChatInfo = () => {
   return (
     <div className={classes.chatInfo}>
       <h2 className={classes.chatName} onClick={toggleModal}>
-        {selectedChat?.chatName || "Выберите чат"}
+        {selectedChat?.chatName || "Select a chat"}
       </h2>
 
       {isModalOpen && selectedChat && (

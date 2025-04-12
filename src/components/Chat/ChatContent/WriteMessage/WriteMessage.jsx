@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import {
   faPaperPlane,
   faSmile,
@@ -14,11 +14,13 @@ export const WriteMessage = () => {
   const currentUser = useSelector((state) => state.users.currentUser);
   const selectedChat = useSelector((state) => state.chats.selectedChat);
 
+  // Format timestamp for messages
   const formatTime = (timestamp) => {
     const date = new Date(timestamp);
     return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
   };
 
+  // Handle sending a message
   const handleSendMessage = (event) => {
     event.preventDefault();
     if (textMessage.trim() && currentUser && selectedChat) {
@@ -42,7 +44,7 @@ export const WriteMessage = () => {
         <input
           value={textMessage}
           type="text"
-          placeholder="Cообщение"
+          placeholder="Message"
           className={classes.input}
           onChange={(e) => setTextMessage(e.target.value)}
         />

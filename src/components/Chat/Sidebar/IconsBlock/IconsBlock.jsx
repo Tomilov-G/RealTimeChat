@@ -12,19 +12,19 @@ export const IconsBlock = () => {
       to: "/profile",
       icon: faCircleUser,
       id: "user-profile",
-      tooltip: "Мой профиль",
+      tooltip: "My Profile",
     },
     {
       to: "/createChat",
       icon: faUsers,
       id: "create-chat",
-      tooltip: "Создать чат",
+      tooltip: "Create Chat",
     },
     {
       to: "/searchCreatedChats",
       icon: faMagnifyingGlass,
       id: "search-create-chat",
-      tooltip: "Поиск чатов",
+      tooltip: "Search Chats",
     },
   ];
   return (

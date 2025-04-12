@@ -10,14 +10,17 @@ export const ChatCommunication = () => {
   const currentUser = useSelector((state) => state.users.currentUser);
 
   useEffect(() => {
+    // Join the selected chat
     if (chatMessages?.id) {
       socket.emit("joinChat", chatMessages.id);
     }
 
+    // Handle incoming messages
     socket.on("receiveMessage", (message) => {
       dispatch(addMessageToChat(message));
     });
 
+    // Cleanup socket listener
     return () => {
       socket.off("receiveMessage");
     };
@@ -42,7 +45,7 @@ export const ChatCommunication = () => {
           );
         })
       ) : (
-        <p className={classes.noMessage}>В чате пока нет сообщений</p>
+        <p className={classes.noMessage}>No messages in the chat yet</p>
       )}
     </div>
   );

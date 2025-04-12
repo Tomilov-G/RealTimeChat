@@ -8,14 +8,15 @@ export const CreateChatDescription = () => {
     (state) => state.chats.chatDetails.chatDescription
   );
 
+  // Handle input change
   const handleChange = (event) => {
     dispatch(setChatDetails({ chatDescription: event.target.value }));
   };
   return (
     <CreateChatDescriptionTextArea
-      label="2. Придумайте описание чата"
+      label="2. Write a chat description"
       id="chatDescription"
-      placeholder="Описание чата"
+      placeholder="Chat description"
       value={chatDescription}
       onChange={handleChange}
     />

@@ -12,6 +12,7 @@ import { FormButton } from "../../../ui/Buttons/FormButton/FormButton";
 import { resetSelectedChatUsers } from "../../../store/Slices/usersSlice";
 import { socket } from "../../../socket";
 
+// Component for creating a new chat
 export const CreateChat = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -21,20 +22,23 @@ export const CreateChat = () => {
     (state) => state.users.selectedChatUsers
   );
 
+  // Handle chat creation
   const handleCreateChat = () => {
     if (!currentUser?.email || !currentUser?.name) {
-      alert("Ошибка: пользователь не авторизован");
+      alert("Error: user not authenticated");
       return;
     }
 
-    const usersWithCurrent = selectedChatUsers.some(
-      (user) => user.id === currentUser.email // Проверяем по email
-    )
-      ? [...selectedChatUsers]
-      : [
-          { id: currentUser.email, name: currentUser.name }, // Используем email
-          ...selectedChatUsers,
-        ];
+    // Normalize selected users to include only id and name
+    const normalizedUsers = selectedChatUsers
+      .filter((user) => user.id !== currentUser.email) // Exclude current user to avoid duplication
+      .map((user) => ({ id: user.email, name: user.name }));
+
+    // Always include current user
+    const usersWithCurrent = [
+      { id: currentUser.email, name: currentUser.name },
+      ...normalizedUsers,
+    ];
 
     const chatData = {
       chatName: chatDetails.chatName,
@@ -44,7 +48,7 @@ export const CreateChat = () => {
       users: usersWithCurrent,
     };
 
-    console.log("Создаём чат:", chatData);
+    console.log("Creating chat:", chatData);
     socket.emit("newChat", chatData);
     dispatch(setCreatedChat(chatData));
     dispatch(resetSelectedChatUsers());
@@ -56,7 +60,7 @@ export const CreateChat = () => {
   return (
     <section className={classes.createChat}>
       <div className={classes.createChatInner}>
-        <h1 className={classes.title}>Новый чат</h1>
+        <h1 className={classes.title}>New Chat</h1>
         <form
           className={classes.formWrapper}
           onSubmit={(e) => {
@@ -68,7 +72,7 @@ export const CreateChat = () => {
           <CreateChatDescription />
           <AddChatUsers />
           <FormButton
-            buttonText="Создать чат"
+            buttonText="Create Chat"
             type="submit"
             className={classes.button}
           />

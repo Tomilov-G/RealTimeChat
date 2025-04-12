@@ -6,84 +6,112 @@ import {
   removeChat,
   updateChat,
   setAllChats,
-  addMessageToChat, // Импортируем, так как он упомянут
+  addMessageToChat,
 } from "./store/Slices/chatsSlice";
 
 export const socket = io("http://localhost:3001");
 
+// Custom hook to manage socket.io connections and events
 export const useSocket = () => {
   const dispatch = useDispatch();
   const currentUser = useSelector((state) => state.users.currentUser);
+  const allChats = useSelector((state) => state.chats.allChats);
 
   useEffect(() => {
+    // Handle successful connection to the server
     socket.on("connect", () => {
       console.log("Connected to server with id: " + socket.id);
     });
 
+    // Register current user with their email when available
     if (currentUser?.email) {
-      socket.emit("register", currentUser.email); // Используем email для регистрации
+      socket.emit("register", currentUser.email);
+      console.log("Registered user:", currentUser.email);
     }
 
-    // Обработка создания нового чата
+    // Handle new chat creation
     socket.on("chatCreated", (chatData) => {
-      console.log("Получен новый чат:", chatData);
-      // Добавляем чат в createdChats только если пользователь в нём участвует
-      if (
-        chatData.users.some((user) => user.id === currentUser?.email) ||
-        chatData.creatorOfChat === currentUser?.name
-      ) {
-        dispatch(setCreatedChat(chatData));
-      }
-      // Обновляем allChats для всех пользователей
-      dispatch(
-        setAllChats([...useSelector((state) => state.chats.allChats), chatData])
+      console.log(
+        "Received chatCreated:",
+        chatData,
+        "Current user:",
+        currentUser?.email
       );
+      // If currentUser is not yet loaded, store chatData temporarily
+      if (!currentUser?.email) {
+        console.warn("currentUser not loaded yet, retrying chatCreated later");
+        setTimeout(() => socket.emit("getAllChats"), 1000); // Retry after delay
+        return;
+      }
+      // Add chat to createdChats if the current user is a participant or creator
+      if (
+        chatData.users.some((user) => user.id === currentUser.email) ||
+        chatData.creatorOfChat === currentUser.name
+      ) {
+        console.log("Adding chat to createdChats for user:", currentUser.email);
+        dispatch(setCreatedChat(chatData));
+      } else {
+        console.log(
+          "User not in chat, skipping createdChats:",
+          currentUser.email
+        );
+      }
+      // Update allChats only if the chat doesn't already exist
+      if (!allChats.some((chat) => chat.id === chatData.id)) {
+        dispatch(setAllChats([...allChats, chatData]));
+      }
     });
 
-    // Обработка удаления пользователя из чата
+    // Handle user removal from chat
     socket.on("userRemoved", ({ chatId, userId, updatedChat }) => {
-      console.log("Пользователь удалён из чата:", updatedChat);
+      console.log("User removed from chat:", updatedChat);
       dispatch(updateChat(updatedChat));
     });
 
-    // Обработка исключения пользователя из чата
+    // Handle user being kicked from chat
     socket.on("kickedFromChat", ({ chatId }) => {
-      console.log("Пользователь исключён из чата:", chatId);
+      console.log("User kicked from chat:", chatId);
       dispatch(removeChat(chatId));
     });
 
-    // Обработка входящих сообщений
+    // Handle incoming messages
     socket.on("receiveMessage", (messageData) => {
-      console.log("Получено сообщение:", messageData);
+      console.log("Received message:", messageData);
       dispatch(addMessageToChat(messageData));
     });
 
-    // Обработка получения всех чатов
+    // Handle receiving all chats
     socket.on("allChats", (chats) => {
-      console.log("Получены все чаты:", chats);
+      console.log("Received all chats:", chats);
       dispatch(setAllChats(chats));
     });
 
-    // Обработка присоединения к чатам
+    // Handle joining chats
     socket.on("joinedChats", (updatedChats) => {
-      console.log("Присоединились к чатам:", updatedChats);
+      console.log("Successfully joined chats:", updatedChats);
       updatedChats.forEach((chat) => {
         dispatch(updateChat(chat));
       });
     });
 
-    // Обработка нового пользователя в чате
-    socket.on("userJoined", ({ chatId, updatedChat }) => {
-      console.log("Новый пользователь в чате:", updatedChat);
-      dispatch(updateChat(updatedChat));
+    // Handle new user joining a chat
+    socket.on("userJoined", ({ chatId, user }) => {
+      console.log("New user joined chat:", user, "chatId:", chatId);
+      dispatch(
+        updateChat({
+          id: chatId,
+          users: [...allChats.find((c) => c.id === chatId)?.users, user],
+        })
+      );
     });
 
-    // Обработка ошибок сервера
+    // Handle server errors
     socket.on("error", (error) => {
-      console.error("Ошибка сервера:", error.message);
+      console.error("Server error:", error.message);
       alert(error.message);
     });
 
+    // Cleanup socket listeners on component unmount
     return () => {
       socket.off("connect");
       socket.off("chatCreated");
@@ -95,7 +123,7 @@ export const useSocket = () => {
       socket.off("userJoined");
       socket.off("error");
     };
-  }, [dispatch, currentUser]);
+  }, [dispatch, currentUser, allChats]);
 
   return socket;
 };

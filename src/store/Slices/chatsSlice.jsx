@@ -7,38 +7,42 @@ const initialState = {
     creatorOfChat: "",
     id: "",
   },
-  createdChats: [], // Чаты, в которых участвует пользователь
-  selectedChat: null, // Текущий выбранный чат
-  allChats: [], // Все созданные чаты (независимо от участия)
-  selectedJoinChats: [], // Чаты, выбранные для присоединения
+  createdChats: [], // Chats the user participates in
+  selectedChat: null, // Currently selected chat
+  allChats: [], // All created chats
+  selectedJoinChats: [], // Chats selected for joining
 };
 
 const chatsSlice = createSlice({
   name: "chats",
   initialState,
   reducers: {
+    // Update chat details
     setChatDetails(state, action) {
       state.chatDetails = { ...state.chatDetails, ...action.payload };
     },
+    // Add a new chat to createdChats and allChats
     setCreatedChat(state, action) {
       if (!Array.isArray(state.allChats)) state.allChats = [];
       const chat = action.payload;
-      console.log("Добавляем чат в createdChats:", chat);
-      // Проверяем, не существует ли чат уже в allChats
+      console.log("Adding chat to createdChats:", chat);
+      // Add to allChats if not already present
       if (!state.allChats.some((c) => c.id === chat.id)) {
         state.allChats.push(chat);
       }
       if (!Array.isArray(state.createdChats)) state.createdChats = [];
-      // Проверяем, не существует ли чат уже в createdChats
+      // Add to createdChats if not already present
       if (!state.createdChats.some((c) => c.id === chat.id)) {
         state.createdChats.push(chat);
       } else {
-        console.log("Чат уже существует в createdChats:", chat.id);
+        console.log("Chat already exists in createdChats:", chat.id);
       }
     },
+    // Reset chat details
     resetChatDetails(state) {
       state.chatDetails = { ...initialState.chatDetails };
     },
+    // Set the selected chat
     setSelectedChat(state, action) {
       const selected = action.payload;
       state.selectedChat = {
@@ -46,6 +50,7 @@ const chatsSlice = createSlice({
         messages: selected.messages || [],
       };
     },
+    // Remove a user from the selected chat
     removeUserFromChat(state, action) {
       if (state.selectedChat) {
         state.selectedChat.users = state.selectedChat.users.filter(
@@ -53,6 +58,7 @@ const chatsSlice = createSlice({
         );
       }
     },
+    // Remove a chat from createdChats
     removeChat(state, action) {
       const chatId = action.payload;
       state.createdChats = state.createdChats.filter(
@@ -62,6 +68,7 @@ const chatsSlice = createSlice({
         state.selectedChat = null;
       }
     },
+    // Update chat in createdChats, allChats, and selectedChat
     updateChat(state, action) {
       const updatedChat = action.payload;
       const chatIndex = state.createdChats.findIndex(
@@ -99,6 +106,7 @@ const chatsSlice = createSlice({
         };
       }
     },
+    // Add a message to the selected chat
     addMessageToChat(state, action) {
       const message = action.payload;
       if (state.selectedChat) {
@@ -128,9 +136,11 @@ const chatsSlice = createSlice({
         }
       }
     },
+    // Set all chats
     setAllChats(state, action) {
       state.allChats = action.payload;
     },
+    // Toggle selection of chats to join
     toggleSelectedJoinChat(state, action) {
       const chatId = action.payload;
       if (state.selectedJoinChats.includes(chatId)) {
@@ -141,6 +151,7 @@ const chatsSlice = createSlice({
         state.selectedJoinChats.push(chatId);
       }
     },
+    // Reset selected chats for joining
     resetSelectedJoinChats(state) {
       state.selectedJoinChats = [];
     },

@@ -15,24 +15,40 @@ const io = new Server(server, {
   },
 });
 
-const chats = {}; // Store for chats
+// Store for chats
+const chats = {};
+// Store for mapping user IDs to socket IDs
 const userSockets = {};
 
 io.on("connection", (socket) => {
   console.log("User connected:", socket.id);
 
+  // Register user with their ID
   socket.on("register", (userId) => {
     userSockets[userId] = socket.id;
     socket.join(`user:${userId}`);
     console.log(`User ${userId} registered with socket.id: ${socket.id}`);
   });
 
+  // Handle new chat creation
   socket.on("newChat", (chatData) => {
     console.log("Received new chat:", chatData);
     chats[chatData.id] = chatData;
-    io.emit("chatCreated", chatData);
+
+    // Notify all participants of the new chat
+    chatData.users.forEach((user) => {
+      const userSocketId = userSockets[user.id];
+      if (userSocketId) {
+        io.to(userSocketId).emit("chatCreated", chatData);
+        console.log(`Sent chatCreated to user ${user.id}`);
+      }
+    });
+
+    // Update all clients with the new chat list
+    io.emit("allChats", Object.values(chats));
   });
 
+  // Handle user removal from chat
   socket.on("removeUserFromChat", ({ chatId, userId, creatorId }) => {
     console.log(
       `Request to remove: chatId=${chatId}, userId=${userId}, creatorId=${creatorId}`
@@ -114,6 +130,7 @@ io.on("connection", (socket) => {
     console.log(`Sent updated chats to user ${socket.id}`);
   });
 
+  // Handle user disconnection
   socket.on("disconnect", () => {
     console.log("User disconnected:", socket.id);
     for (const [userId, socketId] of Object.entries(userSockets)) {
@@ -124,6 +141,7 @@ io.on("connection", (socket) => {
     }
   });
 
+  // Handle sending messages
   socket.on("sendMessage", (data) => {
     if (!data || !data.chatId || !data.message) {
       console.error("Invalid data for sendMessage:", data);
@@ -135,6 +153,7 @@ io.on("connection", (socket) => {
     io.to(chatId).emit("receiveMessage", message);
   });
 
+  // Handle joining a specific chat
   socket.on("joinChat", (chatId) => {
     if (!chatId) {
       console.error("chatId not provided for joinChat");
