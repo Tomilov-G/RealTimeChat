@@ -6,8 +6,9 @@
   column-gap: 10%;
   text-align: center;
   text-decoration: none;
-  border: 0.5px black solid;
+  transition: 0.3s;
   &:hover {
+    background-color: white;
     opacity: 0.8;
   }
 }

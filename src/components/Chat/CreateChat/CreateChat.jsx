@@ -10,55 +10,69 @@ import {
 import { AddChatUsers } from "./AddChatUsers/AddChatUsers";
 import { FormButton } from "../../../ui/Buttons/FormButton/FormButton";
 import { resetSelectedChatUsers } from "../../../store/Slices/usersSlice";
+import { socket } from "../../../socket";
 
+// Component for creating a new chat
 export const CreateChat = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const chatDetails = useSelector((state) => state.chats.chatDetails);
+  const currentUser = useSelector((state) => state.users.currentUser);
   const selectedChatUsers = useSelector(
     (state) => state.users.selectedChatUsers
   );
-  const currentUser = useSelector((state) => state.users.currentUser?.name);
-  const navigate = useNavigate();
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    if (
-      !chatDetails.chatName.trim() ||
-      !chatDetails.chatDescription.trim() ||
-      selectedChatUsers.length <= 0
-    ) {
-      alert(
-        "Пожалуйста, заполните все поля и выберите хотя бы одного пользователя."
-      );
+  // Handle chat creation
+  const handleCreateChat = () => {
+    if (!currentUser?.email || !currentUser?.name) {
+      alert("Error: user not authenticated");
       return;
     }
-    const newChatData = {
-      ...chatDetails,
-      users: selectedChatUsers,
-      creatorOfChat: currentUser,
+
+    // Normalize selected users to include only id and name
+    const normalizedUsers = selectedChatUsers
+      .filter((user) => user.id !== currentUser.email) // Exclude current user to avoid duplication
+      .map((user) => ({ id: user.email, name: user.name }));
+
+    // Always include current user
+    const usersWithCurrent = [
+      { id: currentUser.email, name: currentUser.name },
+      ...normalizedUsers,
+    ];
+
+    const chatData = {
+      chatName: chatDetails.chatName,
+      chatDescription: chatDetails.chatDescription,
+      creatorOfChat: currentUser.name,
       id: new Date().toISOString(),
+      users: usersWithCurrent,
     };
-    dispatch(setCreatedChat(newChatData));
-    navigate("/chat");
-    dispatch(resetChatDetails());
+
+    console.log("Creating chat:", chatData);
+    socket.emit("newChat", chatData);
+    dispatch(setCreatedChat(chatData));
     dispatch(resetSelectedChatUsers());
+    dispatch(resetChatDetails());
+
+    navigate("/chat");
   };
 
   return (
     <section className={classes.createChat}>
       <div className={classes.createChatInner}>
-        <h1 className={classes.title}>Новый чат</h1>
+        <h1 className={classes.title}>New Chat</h1>
         <form
-          action=""
           className={classes.formWrapper}
-          type="submit"
-          onSubmit={handleSubmit}
+          onSubmit={(e) => {
+            e.preventDefault();
+            handleCreateChat();
+          }}
         >
           <CreateChatName />
           <CreateChatDescription />
           <AddChatUsers />
           <FormButton
-            buttonText="Создать чат"
+            buttonText="Create Chat"
             type="submit"
             className={classes.button}
           />
@@ -67,3 +81,5 @@ export const CreateChat = () => {
     </section>
   );
 };
+
+export default CreateChat;

@@ -10,11 +10,14 @@ export const AddChatUsers = () => {
   const dispatch = useDispatch();
   const users = useSelector((state) => state.users.users);
 
+  // Fetch users if not loaded
   useEffect(() => {
     if (users.length === 0) {
       dispatch(fetchUsers());
     }
   }, []);
+
+  // Filter users based on search query
   const filteredUsers = useMemo(
     () =>
       users.filter(
@@ -25,10 +28,12 @@ export const AddChatUsers = () => {
     [users, searchUser]
   );
 
+  // Handle search input change
   const handleSearchUser = useCallback((event) => {
     setSearchUser(event.target.value.trim());
   }, []);
 
+  // Toggle user selection
   const handleToggleUser = (user) => {
     dispatch(toggleSelectedUser(user));
   };
@@ -36,9 +41,9 @@ export const AddChatUsers = () => {
   return (
     <>
       <SearchUserInput
-        label="3. Выбрать участников чата"
+        label="3. Select chat participants"
         id="searchUsers"
-        placeholder="Поиск по имени или номеру"
+        placeholder="Search by name or phone"
         type="text"
         value={searchUser}
         onChange={handleSearchUser}

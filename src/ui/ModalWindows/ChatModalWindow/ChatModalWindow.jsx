@@ -9,15 +9,16 @@ export const ChatModalWindow = ({
   return (
     <div className={classes.chatModalWindow}>
       <div className={classes.chatModalContent}>
-        <h2 className={classes.title}>Описание чата</h2>
+        <h2 className={classes.title}>Описание</h2>
         <p>{chatDescription}</p>
         <hr className={classes.line} />
         <h2 className={classes.title}>Создатель чата</h2>
-        <p>
-          {chatCreator} <FontAwesomeIcon icon={faCrown} />
+        <p className={classes.creatorName}>
+          {chatCreator}
+          <FontAwesomeIcon icon={faCrown} className={classes.icon} />
         </p>
         <hr className={classes.line} />
-        <h2 className={classes.title}>Список участников</h2>
+        <h2 className={classes.title}>Участники</h2>
         <ul className={classes.chatUsersList}>{chatUsers}</ul>
       </div>
     </div>

@@ -1,4 +1,5 @@
 import classes from "./SearchUserInput.module.scss";
+
 export const SearchUserInput = ({
   id,
   label,

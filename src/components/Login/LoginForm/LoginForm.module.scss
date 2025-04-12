@@ -1,5 +1,6 @@
 .formWrapper {
-  background-color: black;
+  background-color: #fbab7e;
+  background-image: linear-gradient(62deg, #fbab7e 0%, #f7ce68 100%);
   height: 600px;
   width: 50%;
   border-radius: 50px;
@@ -8,17 +9,19 @@
   justify-content: center;
   flex-direction: column;
   .logo {
-    font-size: 32px;
+    font-size: 30px;
+    padding-bottom: 50px;
   }
   .formTitle {
-    font-size: 24px;
+    color: black;
+    font-size: 20px;
   }
   .loginForm {
     height: 250px;
     width: 90%;
     border-radius: 50px;
     margin-block: 30px;
-    background-color: white;
+    background-color: rgb(230, 228, 228);
     display: flex;
     flex-direction: column;
     justify-content: center;

@@ -5,6 +5,7 @@ import { ChatPage } from "./pages/ChatPage.jsx";
 import { CreatAccountPage } from "./pages/CreateAccountPage.jsx";
 import { CreateChatPage } from "./pages/CreateChatPage.jsx";
 import { UserProfilePage } from "./pages/UserProfilePage.jsx";
+import { SearchCreatedChatsPage } from "./pages/SearchCreatedChatsPage.jsx";
 
 export const router = createBrowserRouter([
   {
@@ -30,6 +31,10 @@ export const router = createBrowserRouter([
       {
         path: "/profile",
         element: <UserProfilePage />,
+      },
+      {
+        path: "/searchCreatedChats",
+        element: <SearchCreatedChatsPage />,
       },
     ],
   },
